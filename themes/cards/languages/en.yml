@@ -18,7 +18,7 @@ post:
   sticky: Sticky
   comments: Comments
   comments_placeholder: Unable to load %s, please make sure your network can access.
-  updated: 'Updated At '
+#  updated: 'Updated At '
   prev: Previous Post
   next: Next Post
   toc: Article Directory
