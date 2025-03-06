@@ -136,7 +136,7 @@ style:
 meta:
 
   # 默认文章标题
-  title: 'no title'
+  title: 'No Title'
   
   # 默认文章作者（可在front-matter中覆盖）
   author:
@@ -423,7 +423,7 @@ fancybox:
   auto: false
   
 # 返回顶部
-back_to_top: true
+back_to_top: false
 
 # 深色模式
 darkmode: true
