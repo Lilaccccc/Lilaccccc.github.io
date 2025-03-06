@@ -149,9 +149,9 @@ meta:
     format: 'YYYY-MM-DD hh:mm:ss' # 日期格式 http://momentjs.com/docs/
   
   # 文章更新日期
-#  updated:
-#    title: ''
-#    format: 'YYYY-MM-DD hh:mm:ss' # 日期格式 http://momentjs.com/docs/
+  updated:
+    title: ''
+    format: 'YYYY-MM-DD hh:mm:ss' # 日期格式 http://momentjs.com/docs/
 
   # 文章缩略图
   thumbnail: 
@@ -460,7 +460,7 @@ vendors:
   # code highlight css
   # https://cdn.jsdelivr.net/npm/hexo-theme-cards@1.2/dist/css/highlight/
   # Version: 1.4
-  highlight: 
+  highlight:
 
   # highlight.js theme
   # https://cdn.jsdelivr.net/npm/highlight.js@10.1.2/styles/
