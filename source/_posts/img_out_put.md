@@ -5,7 +5,7 @@ layout: post
 # Scala 渲染文字到图片中
 
 导入包：
-```scala 3
+```scala
 import java.awt.image.BufferedImage
 import java.awt.*
 import java.io.File
@@ -13,7 +13,7 @@ import javax.imageio.ImageIO
 ```
 
 ## 创建空白图片并渲染文字
-```scala 3
+```scala
 @main def drawTextOnImage(): Unit = {
   // 创建一个空白图片
   val width = 500
@@ -53,7 +53,7 @@ import javax.imageio.ImageIO
 ```
 
 ## 加载已有图片并渲染文字
-```scala 3
+```scala
 @main def addTextToImage(): Unit = {
   // 读取已有的图片
   val inputFile = new File("src/main/scala/img/input.jpg")
