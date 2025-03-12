@@ -64,23 +64,73 @@
 </div>
 
 <script>
-    // GET 请求
-    fetch('https://api.suyanw.cn/api/chouq.php')
-        .then(response => response.json())
-        .then(data => {
-            console.log('成功:', data);
+    // 获取当前时间的 0 点时间戳
+    function getMidnightTimestamp() {
+        const now = new Date();
+        const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
+        return midnight.getTime();
+    }
 
-            // 将数据插入到页面中
-            document.getElementById('draw').innerText = data.data.draw;
-            document.getElementById('annotate').innerText = `[签语]：${data.data.annotate}`;
-            document.getElementById('explain').innerText = `[解曰]：${data.data.explain}`;
-            document.getElementById('details').innerText = data.data.details;
-            document.getElementById('source').innerText = data.data.source;
-            document.getElementById('image').src = data.data.image;
-        })
-        .catch(error => {
-            console.error('错误:', error);
-        });
+    // 检查是否需要调用 API
+    function shouldCallAPI() {
+        const lastCallTime = localStorage.getItem('lastCallTime');
+        if (!lastCallTime) return true; // 如果没有记录，则需要调用
+
+        const currentTime = new Date().getTime();
+        const midnightTimestamp = getMidnightTimestamp();
+
+        // 如果当前时间已经过了凌晨 0 点，并且距离上次调用超过 24 小时
+        return currentTime >= midnightTimestamp && (currentTime - lastCallTime) >= 24 * 60 * 60 * 1000;
+    }
+
+    // 更新页面数据
+    function updatePageData(data) {
+        document.getElementById('draw').innerText = data.data.draw;
+        document.getElementById('annotate').innerText = `[签语]：${data.data.annotate}`;
+        document.getElementById('explain').innerText = `[解曰]：${data.data.explain}`;
+        document.getElementById('details').innerText = data.data.details;
+        document.getElementById('source').innerText = data.data.source;
+        document.getElementById('image').src = data.data.image;
+    }
+
+    // 从 localStorage 加载数据
+    const info = JSON.parse(localStorage.getItem('draw_info'));
+    if (info && !shouldCallAPI()) {
+        // 如果缓存中有数据且不需要调用 API，则直接使用缓存数据
+        updatePageData(info);
+    } else {
+        // 调用 API 获取新数据
+        fetch('https://api.suyanw.cn/api/chouq.php')
+            .then(response => response.json())
+            .then(data => {
+                // 更新页面数据
+                updatePageData(data);
+
+                // 将数据存储到 localStorage
+                localStorage.setItem('draw_info', JSON.stringify(data));
+                localStorage.setItem('lastCallTime', new Date().getTime());
+            })
+            .catch(error => {
+                console.error('API 调用失败:', error);
+            });
+    }
+
+    // 凌晨 0 点刷新逻辑
+    function clearCacheAtMidnight() {
+        const now = new Date();
+        const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0);
+        const timeUntilMidnight = midnight.getTime() - now.getTime();
+
+        // 设置定时器，在凌晨 0 点清除缓存
+        setTimeout(() => {
+            localStorage.removeItem('draw_info');
+            localStorage.removeItem('lastCallTime');
+            console.log('缓存已清除，准备重新调用 API');
+        }, timeUntilMidnight);
+    }
+
+    // 启动凌晨 0 点刷新逻辑
+    clearCacheAtMidnight();
 </script>
 </body>
 </html>
