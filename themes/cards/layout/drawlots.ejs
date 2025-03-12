@@ -1,0 +1,86 @@
+<% page.cover = false; %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>抽签结果</title>
+    <style>
+        .draw_info {
+            padding: 20px;
+            max-width: 60%;
+            width: 100%;
+            text-align: center;
+            border: 1px solid #ddd;
+            margin: 30px auto 0;
+        }
+
+        .draw_info h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #4a90e2;
+        }
+
+        .draw_info p {
+            font-size: 20px;
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+
+        .draw_info .annotate {
+            font-style: italic;
+            color: #e74c3c;
+        }
+
+        .draw_info .explain {
+            font-weight: bold;
+            color: #27ae60;
+        }
+
+        .draw_info .details {
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-align: left;
+            font-size: 18px;
+        }
+
+        .draw_info .source {
+            font-size: 16px;
+            color: #888;
+            margin-top: 20px;
+            padding-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+<div class="draw_info">
+    <img id="image" src="" alt="抽签图片">
+    <h1 id="draw"></h1>
+    <p class="annotate" id="annotate"></p>
+    <p class="explain" id="explain"></p>
+    <div class="details" id="details"></div>
+    <p class="source" id="source"></p>
+</div>
+
+<script>
+    // GET 请求
+    fetch('https://api.suyanw.cn/api/chouq.php')
+        .then(response => response.json())
+        .then(data => {
+            console.log('成功:', data);
+
+            // 将数据插入到页面中
+            document.getElementById('draw').innerText = data.data.draw;
+            document.getElementById('annotate').innerText = `[签语]：${data.data.annotate}`;
+            document.getElementById('explain').innerText = `[解曰]：${data.data.explain}`;
+            document.getElementById('details').innerText = data.data.details;
+            document.getElementById('source').innerText = data.data.source;
+            document.getElementById('image').src = data.data.image;
+        })
+        .catch(error => {
+            console.error('错误:', error);
+        });
+</script>
+</body>
+</html>

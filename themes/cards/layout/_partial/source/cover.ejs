@@ -10,11 +10,25 @@
                 <h1><%= config.title %></h1>
             <% } %>
         </div>
-        
+
         <% if (theme.cover.description) { %>
             <div class="cover__intro">
-                <%- markdown(theme.cover.description) %> 
+                <%- markdown(theme.cover.description) %>
             </div>
         <% } %>
     </div>
 <% } %>
+
+<script>
+    // GET 请求
+    fetch('https://api.suyanw.cn/api/gushi.php')
+        .then(response => response.text())
+        .then(data => {
+            // console.log('成功:', data);
+            // 将数据插入到页面中
+            document.querySelector('.cover__intro').innerText = data;
+        })
+        .catch(error => {
+            // console.error('错误:', error);
+        });
+</script>

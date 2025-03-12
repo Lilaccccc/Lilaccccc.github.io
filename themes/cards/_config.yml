@@ -52,6 +52,8 @@ navbar:
   menu: 
     - name: 首页
       url: /
+    - name: 抽签
+      url: /draw_lots/
 #    - name: 标签
 #      url: /tags/
 #    - name: 归档
@@ -66,16 +68,16 @@ navbar:
   sticky: false
 
 # 封面 cover 设置
-cover: 
+cover:
 
   # 显示在最上方 cover 处的站点名称
   sitename: Lilaccccc's Blog
 
   # 若 avatar 配置不为空，则优先使用 avatar 覆盖 sitename
-  avatar: 
+  avatar: https://avatars.githubusercontent.com/u/105717407?v=4
   
   # sitename/avatar 下方的一句话介绍
-  description: Hi, nice to meet you!
+  description: '-'
 
 
 
@@ -166,7 +168,7 @@ meta:
 
   # 文章自动摘要
   auto_excerpt: 
-    enable: true
+    enable: false
     length: 800
 
   # 文章目录
@@ -399,7 +401,7 @@ footer:
 
 # 图片懒加载插件
 lazyload:
-  enable: false
+  enable: true
   loadingImage: 
 
 # 站内搜索插件
@@ -420,7 +422,7 @@ fold:
 # 图片点击放大插件
 fancybox: 
   enable: false
-  auto: false
+  auto: true
   
 # 返回顶部
 back_to_top: false
@@ -447,20 +449,20 @@ vendors:
   # https://cdn.jsdelivr.net/npm/hexo-theme-cards@1.4/dist/css/style/main.min.css
   # Version: 1.4
   # 如果你有自定义样式，请务必将此项修改为自己的 CDN 地址，或者单纯留空
-  style: 
+  style:
 
   # darkmode
   # https://cdn.jsdelivr.net/npm/hexo-theme-cards@1.4/dist/css/style/dark.min.css
   # https://cdn.jsdelivr.net/npm/hexo-theme-cards@1.4/dist/js/darkmode.min.js
   # Version 1.4
   darkmode: 
-    css: 
-    js: 
+    css:
+    js:
   
   # code highlight css
   # https://cdn.jsdelivr.net/npm/hexo-theme-cards@1.2/dist/css/highlight/
   # Version: 1.4
-  highlight:
+  highlight: https://cdn.jsdelivr.net/npm/hexo-theme-cards@1.5.1/dist/css/highlight/highlight.css
 
   # highlight.js theme
   # https://cdn.jsdelivr.net/npm/highlight.js@10.1.2/styles/
