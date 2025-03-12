@@ -54,12 +54,14 @@ navbar:
       url: /
     - name: 抽签
       url: /draw_lots/
+    - name: 八字
+      url: /ba_zi/
+    - name: 友链
+      url: /friends/
 #    - name: 标签
 #      url: /tags/
 #    - name: 归档
 #      url: /archives/
-    - name: 友链
-      url: /friends/
 #    - name: Page
 #      url: /page/
 
@@ -462,12 +464,12 @@ vendors:
   # code highlight css
   # https://cdn.jsdelivr.net/npm/hexo-theme-cards@1.2/dist/css/highlight/
   # Version: 1.4
-  highlight: https://cdn.jsdelivr.net/npm/hexo-theme-cards@1.5.1/dist/css/highlight/highlight.css
+  highlight:
 
   # highlight.js theme
   # https://cdn.jsdelivr.net/npm/highlight.js@10.1.2/styles/
   # Version: 10.1.2
-  hljs: 
+  hljs:
 
   # prism.js theme
   # https://cdn.jsdelivr.net/npm/prismjs@1.21.0/themes/

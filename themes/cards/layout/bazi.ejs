@@ -1,0 +1,157 @@
+<% page.cover = false; %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>八字命理</title>
+    <style>
+        .container {
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            /*max-width: 500px;*/
+            width: 35%;
+            /*color: #4a90e2;*/
+        }
+        h1 {
+            text-align: center;
+            color: #4a90e2;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        input[type="date"],
+        input[type="time"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4a90e2;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #357abd;
+        }
+        .output {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 20px;
+            line-height: 1.6;
+        }
+        .output h2 {
+            color: #4a90e2;
+        }
+        .output p {
+            margin: 5px 0;
+        }
+        #wuXing, #naYin {
+            white-space: pre-line;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>八字命理</h1>
+    <label for="birthdate">请输入出生日期：</label>
+    <input type="date" id="birthdate" required>
+    <label for="birthtime">请输入出生时间：</label>
+    <input type="time" id="birthtime" required>
+    <button onclick="calculateBazi()">计算八字</button>
+    <div class="output" id="output" style="display: none;">
+        <p><strong>年支十神：</strong> <span id="yearShiShen"></span></p>
+        <p><strong>月支十神：</strong> <span id="monthShiShen"></span></p>
+        <p><strong>日支十神：</strong> <span id="dayShiShen"></span></p>
+        <p><strong>时支十神：</strong> <span id="timeShiShen"></span></p>
+        <br>
+        <p><strong>五行：</strong> <span id="wuXing"></span></p>
+        <br>
+        <p><strong>纳音：</strong> <span id="naYin"></span></p>
+        <br>
+        <p><strong>起运时间：</strong> <span id="yunStart"></span></p>
+        <p><strong>大运：</strong> <br> <span id="daYun"></span></p>
+        <p><strong>流年：</strong> <br> <span id="liuNian"></span></p>
+        <br>
+        <p style="text-align: center; font-size: 25px; color: tomato"><strong>命理揭示趋势，人生仍需自身把握！</strong></p>
+    </div>
+</div>
+
+<script src="https://cdn.bootcdn.net/ajax/libs/lunar-javascript/1.6.9/lunar.js"></script>
+<script>
+    function calculateBazi() {
+        const birthdate = document.getElementById('birthdate').value;
+        const birthtime = document.getElementById('birthtime').value;
+        if (!birthdate || !birthtime) {
+            alert('请输入出生日期和时间！');
+            return;
+        }
+
+        // 将日期和时间拼接为完整的日期时间字符串
+        const datetimeString = `${birthdate}T${birthtime}`;
+        const date = new Date(datetimeString);
+
+        // 检查日期是否有效
+        if (isNaN(date.getTime())) {
+            alert('请输入有效的日期和时间！');
+            return;
+        }
+
+        const lunar = Lunar.fromDate(date);
+        const d = lunar.getEightChar();
+
+        // 显示输出区域
+        document.getElementById('output').style.display = 'block';
+
+        // 填充八字信息
+        document.getElementById('yearShiShen').textContent = d.getYearShiShenZhi();
+        document.getElementById('monthShiShen').textContent = d.getMonthShiShenZhi();
+        document.getElementById('dayShiShen').textContent = d.getDayShiShenZhi();
+        document.getElementById('timeShiShen').textContent = d.getTimeShiShenZhi();
+
+        document.getElementById('wuXing').textContent =
+            `\n年五行：${d.getYearWuXing()}\n月五行：${d.getMonthWuXing()}\n日五行：${d.getDayWuXing()}\n时五行：${d.getTimeWuXing()}`;
+
+        document.getElementById('naYin').textContent =
+            `\n年纳音：${d.getYearNaYin()}\n月纳音：${d.getMonthNaYin()}\n日纳音：${d.getDayNaYin()}\n时纳音：${d.getTimeNaYin()}`;
+
+        // 起运信息
+        const yun = d.getYun(1); // 1 表示男性，女性传入 0
+        document.getElementById('yunStart').textContent =
+            `出生后 ${yun.getStartYear()} 年 ${yun.getStartMonth()} 个月 ${yun.getStartDay()} 天起运`;
+
+        // 大运信息
+        const daYunArr = yun.getDaYun();
+        let daYunText = '';
+        for (let i = 0; i < daYunArr.length; i++) {
+            const daYun = daYunArr[i];
+            daYunText += `${daYun.getStartYear()} 年（${daYun.getStartAge()} 岁）：${daYun.getGanZhi()}<br>`;
+        }
+        document.getElementById('daYun').innerHTML = daYunText;
+
+        // 流年信息（以第1次大运为例）
+        const liuNianArr = daYunArr[1].getLiuNian();
+        let liuNianText = '';
+        for (let i = 0; i < liuNianArr.length; i++) {
+            const liuNian = liuNianArr[i];
+            liuNianText += `${liuNian.getYear()} 年（${liuNian.getAge()} 岁）：${liuNian.getGanZhi()}<br>`;
+        }
+        document.getElementById('liuNian').innerHTML = liuNianText;
+    }
+</script>
+</body>
+</html>
