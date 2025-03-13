@@ -73,7 +73,7 @@
 
     // 检查是否需要调用 API
     function shouldCallAPI() {
-        const lastCallTime = localStorage.getItem('lastCallTime');
+        const lastCallTime = localStorage.getItem('lastCallTime_draw');
         if (!lastCallTime) return true; // 如果没有记录，则需要调用
 
         const currentTime = new Date().getTime();
@@ -108,29 +108,12 @@
 
                 // 将数据存储到 localStorage
                 localStorage.setItem('draw_info', JSON.stringify(data));
-                localStorage.setItem('lastCallTime', new Date().getTime());
+                localStorage.setItem('lastCallTime_draw', new Date().getTime());
             })
             .catch(error => {
                 console.error('API 调用失败:', error);
             });
     }
-
-    // 凌晨 0 点刷新逻辑
-    function clearCacheAtMidnight() {
-        const now = new Date();
-        const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0);
-        const timeUntilMidnight = midnight.getTime() - now.getTime();
-
-        // 设置定时器，在凌晨 0 点清除缓存
-        setTimeout(() => {
-            localStorage.removeItem('draw_info');
-            localStorage.removeItem('lastCallTime');
-            console.log('缓存已清除，准备重新调用 API');
-        }, timeUntilMidnight);
-    }
-
-    // 启动凌晨 0 点刷新逻辑
-    clearCacheAtMidnight();
 </script>
 </body>
 </html>

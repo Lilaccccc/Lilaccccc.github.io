@@ -1,19 +1,191 @@
 <% page.cover = false; %>
 <!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>今日老婆</title>
+    <title>今日老婆 - 每日美图</title>
     <style>
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-top: 2rem;
+            position: relative;
+        }
+
+        .title {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            font-size: 2.2rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .image-container {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #f8f9fa;
+            min-height: 500px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #wifeImage {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            display: none;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #e0e0e0;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .loading-text {
+            color: #7f8c8d;
+            font-size: 1.2rem;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .error {
+            color: #e74c3c;
+            padding: 1rem;
+            text-align: center;
+            display: none;
+        }
+
+        .footer {
+            margin-top: 2rem;
+            color: #7f8c8d;
+            text-align: center;
+        }
     </style>
 </head>
 
 <body>
-
-</body>
+<!--<h1 class="title">今日老婆</h1>-->
+<div class="container">
+    <div class="image-container">
+        <div class="loading">
+            <div class="spinner"></div>
+            <div class="loading-text">正在为您召唤老婆...</div>
+        </div>
+        <img id="wifeImage" alt="今日老婆">
+        <div class="error">⚠️ 老婆召唤失败，请稍后再试</div>
+    </div>
+</div>
+<div class="footer">每日0点自动更新 | 遇到问题请刷新页面</div>
 
 <script>
+    // 缓存控制函数
+    function getDailyCacheKey() {
+        const today = new Date();
+        return `wife_${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+    }
 
+    // 显示/隐藏加载状态
+    function showLoading(visible) {
+        document.querySelector('.loading').style.display = visible ? 'flex' : 'none';
+        document.querySelector('.error').style.display = 'none';
+    }
+
+    // 显示错误信息
+    function showError() {
+        document.querySelector('.loading').style.display = 'none';
+        document.querySelector('.error').style.display = 'block';
+    }
+
+    // 图片加载处理器
+    function loadImage() {
+        const img = document.getElementById('wifeImage');
+        const cacheKey = getDailyCacheKey();
+        const cachedUrl = localStorage.getItem(cacheKey);
+
+        // 如果已有当日缓存
+        if (cachedUrl) {
+            img.src = cachedUrl;
+            img.style.display = 'block';
+            return;
+        }
+
+        showLoading(true);
+
+        // 创建图片加载器
+        const newImg = new Image();
+        newImg.crossOrigin = 'anonymous'; // 尝试跨域访问
+
+        newImg.onload = () => {
+            // 保存到本地缓存
+            localStorage.setItem(cacheKey, newImg.src);
+            localStorage.setItem('lastCallTime_wife', new Date().getTime());
+
+            // 更新显示
+            img.src = newImg.src;
+            img.style.display = 'block';
+            showLoading(false);
+        };
+
+        newImg.onerror = () => {
+            showError();
+            // 尝试使用旧缓存
+            const keys = Object.keys(localStorage);
+            const lastValidKey = keys.reverse().find(k => k.startsWith('wife_'));
+            if (lastValidKey) {
+                img.src = localStorage.getItem(lastValidKey);
+                img.style.display = 'block';
+            }
+            showLoading(false);
+        };
+
+        newImg.src = `https://shanhe.kim/api/tu/anime.php`;
+    }
+
+    // 检查是否需要调用 API
+    function shouldCallAPI() {
+        const lastCallTime = localStorage.getItem('lastCallTime_wife');
+        if (!lastCallTime) return true; // 如果没有记录，则需要调用
+
+        const currentTime = new Date().getTime();
+        const midnightTimestamp = getMidnightTimestamp();
+
+        // 如果当前时间已经过了凌晨 0 点，或者距离上次调用超过 24 小时
+        return currentTime >= midnightTimestamp || (currentTime - lastCallTime) >= 24 * 60 * 60 * 1000;
+    }
+
+    // 初始化加载
+    if (shouldCallAPI()) {
+        localStorage.removeItem(getDailyCacheKey());
+    }
+    loadImage();
 </script>
+</body>
 </html>
