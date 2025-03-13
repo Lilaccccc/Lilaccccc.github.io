@@ -56,8 +56,12 @@ navbar:
       url: /draw_lots/
     - name: 八字
       url: /ba_zi/
+    - name: 今日老婆
+      url: /wife/
     - name: 友链
       url: /friends/
+#    - name: 合婚
+#      url: /he_hun/
 #    - name: 标签
 #      url: /tags/
 #    - name: 归档

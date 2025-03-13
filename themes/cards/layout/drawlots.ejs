@@ -79,8 +79,8 @@
         const currentTime = new Date().getTime();
         const midnightTimestamp = getMidnightTimestamp();
 
-        // 如果当前时间已经过了凌晨 0 点，并且距离上次调用超过 24 小时
-        return currentTime >= midnightTimestamp && (currentTime - lastCallTime) >= 24 * 60 * 60 * 1000;
+        // 如果当前时间已经过了凌晨 0 点，或者距离上次调用超过 24 小时
+        return currentTime >= midnightTimestamp || (currentTime - lastCallTime) >= 24 * 60 * 60 * 1000;
     }
 
     // 更新页面数据
