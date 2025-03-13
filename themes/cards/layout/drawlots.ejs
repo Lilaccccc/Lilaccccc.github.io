@@ -64,23 +64,13 @@
 </div>
 
 <script>
-    // 获取当前时间的 0 点时间戳
-    function getMidnightTimestamp() {
-        const now = new Date();
-        const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
-        return midnight.getTime();
-    }
-
-    // 检查是否需要调用 API
-    function shouldCallAPI() {
+    // 检查是否不需要调用 API
+    function shouldNotCallAPI() {
         const lastCallTime = localStorage.getItem('lastCallTime_draw');
-        if (!lastCallTime) return true; // 如果没有记录，则需要调用
-
-        const currentTime = new Date().getTime();
-        const midnightTimestamp = getMidnightTimestamp();
-
-        // 如果当前时间已经过了凌晨 0 点，或者距离上次调用超过 24 小时
-        return currentTime >= midnightTimestamp || (currentTime - lastCallTime) >= 24 * 60 * 60 * 1000;
+        // 如果没有记录，则需要调用
+        if (!lastCallTime) return false;
+        // 如果当前时间没有过去 1 小时
+        return (new Date().getTime() - lastCallTime) <= 60 * 60 * 1000;
     }
 
     // 更新页面数据
@@ -95,7 +85,7 @@
 
     // 从 localStorage 加载数据
     const info = JSON.parse(localStorage.getItem('draw_info'));
-    if (info && !shouldCallAPI()) {
+    if (info && shouldNotCallAPI()) {
         // 如果缓存中有数据且不需要调用 API，则直接使用缓存数据
         updatePageData(info);
     } else {
