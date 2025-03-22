@@ -1,6 +1,7 @@
 ---
 title: Vert.x += SaToken
 layout: post
+date: 2025-03-22 23:02:54
 ---
 # Vert.x 集成 Sa-Token
 - 官方文档：[Sa-Token](https://sa-token.cc/doc.html#/).
