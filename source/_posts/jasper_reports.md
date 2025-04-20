@@ -1,3 +1,7 @@
+---
+title: Spring Boot 集成 JasperReports
+layout: post
+---
 # Spring Boot 集成 JasperReports
 
 导入依赖 `pom.xml`：
