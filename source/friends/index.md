@@ -19,7 +19,7 @@ links:
   - name: 城子的小屋
     url: https://xcz.me/
     avatar: https://xcz.me/img/avatar.jpg
-    desc: 博主新站
+    desc: 小城子的博客
     target: _blank
   - name: 哈基肠粉
     url: http://blog.abbatri.online/
