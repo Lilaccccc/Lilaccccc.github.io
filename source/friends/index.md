@@ -12,7 +12,7 @@ links:
     desc: 这里是兴趣使然的无名小站（ACBD站）_bilbil
     target: _blank
   - name: irislc
-    url: https://blog.irislc.top/
+    url: https://blog.irislc.net/
     avatar: https://blog.irislc.top/upload/siteImg/siteLogo.webp?v=1739988555693
     desc: 战略性待机中~
     target: _blank
